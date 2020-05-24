@@ -1,0 +1,71 @@
+<h3>Select Service Parameters to search instances</h3>
+
+<!-- gpuMemory
+  processorFeatures -->
+  
+<!-- 
+instanceFamily
+operatingSystem
+clockSpeed
+physicalProcessor
+memory
+vcpu
+storage
+
+networkPerformance
+ebsOptimized
+volumeType
+instanceType
+location (already chosen the availability zone) -->
+<form>
+  <div class="form-group row">
+    <label for="instanceFamily" class="col-sm-2 col-form-label">Instance Family</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="instanceFamily" name="instanceFamily" [(ngModel)]="searchParams.instanceFamily" placeholder="Instance Family">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="operatingSystem" class="col-sm-2 col-form-label">Operating System</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="operatingSystem" name="operatingSystem" [(ngModel)]="searchParams.operatingSystem" placeholder="OS">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="clockSpeed" class="col-sm-2 col-form-label">Clock Speed</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="clockSpeed" name="clockSpeed" [(ngModel)]="searchParams.clockSpeed" placeholder="Clock Speed">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="physicalProcessor" class="col-sm-2 col-form-label">Physical Processor</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="physicalProcessor" name="physicalProcessor" [(ngModel)]="searchParams.physicalProcessor" placeholder="Physical Processor">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="memory" class="col-sm-2 col-form-label">Memory</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="memory" name="memory" [(ngModel)]="searchParams.memory" placeholder="Memory">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="vcpu" class="col-sm-2 col-form-label">VCPU</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="vcpu" name="vcpu" [(ngModel)]="searchParams.vcpu" placeholder="VCPU">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="storage" class="col-sm-2 col-form-label">Storage</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="storage" name="storage" [(ngModel)]="searchParams.storage" placeholder="Storage">
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary mb-2" (click)="displayParams()">Search Instances</button>
+</form>
