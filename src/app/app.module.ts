@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { Ec2SearchComponent } from './ec2-search/ec2-search.component';
+import { AWSUtilsService } from './AWS-utils.service';
 
 
 @NgModule({
@@ -21,7 +22,7 @@ import { Ec2SearchComponent } from './ec2-search/ec2-search.component';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [AWSUtilsService],
+  bootstrap: [AppComponent, HeaderComponent]
 })
 export class AppModule { }

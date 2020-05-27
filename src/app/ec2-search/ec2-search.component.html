@@ -17,55 +17,77 @@ ebsOptimized
 volumeType
 instanceType
 location (already chosen the availability zone) -->
-<form>
+<form #searchForm="ngForm" (submit)="displayParams()">
   <div class="form-group row">
     <label for="instanceFamily" class="col-sm-2 col-form-label">Instance Family</label>
-    <div class="col-sm-10">
+    <!-- <div class="col-sm-10">
       <input type="text" class="form-control" id="instanceFamily" name="instanceFamily" [(ngModel)]="searchParams.instanceFamily" placeholder="Instance Family">
-    </div>
+    </div> -->
+    <select class="form-control col-sm-10" id="instanceFamily" name="instanceFamily" [(ngModel)]="searchParams.instanceFamily">
+      <option *ngFor="let val of searchParamAttributes.instanceFamily" name="instanceFamily"> {{val}} </option>
+    </select>
   </div>
 
   <div class="form-group row">
     <label for="operatingSystem" class="col-sm-2 col-form-label">Operating System</label>
-    <div class="col-sm-10">
+    <!-- <div class="col-sm-10">
       <input type="text" class="form-control" id="operatingSystem" name="operatingSystem" [(ngModel)]="searchParams.operatingSystem" placeholder="OS">
-    </div>
+    </div> -->
+    <select class="form-control col-sm-10" id="operatingSystem" name="operatingSystem" [(ngModel)]="searchParams.operatingSystem">
+      <option *ngFor="let val of searchParamAttributes.operatingSystem" name="operatingSystem"> {{val}} </option>
+    </select>
   </div>
 
   <div class="form-group row">
     <label for="clockSpeed" class="col-sm-2 col-form-label">Clock Speed</label>
-    <div class="col-sm-10">
+    <!-- <div class="col-sm-10">
       <input type="text" class="form-control" id="clockSpeed" name="clockSpeed" [(ngModel)]="searchParams.clockSpeed" placeholder="Clock Speed">
-    </div>
+    </div> -->
+    <select class="form-control col-sm-10" id="clockSpeed" name="clockSpeed" [(ngModel)]="searchParams.clockSpeed">
+      <option *ngFor="let val of searchParamAttributes.clockSpeed" name="clockSpeed"> {{val}} </option>
+    </select>
   </div>
 
   <div class="form-group row">
     <label for="physicalProcessor" class="col-sm-2 col-form-label">Physical Processor</label>
-    <div class="col-sm-10">
+    <!-- <div class="col-sm-10">
       <input type="text" class="form-control" id="physicalProcessor" name="physicalProcessor" [(ngModel)]="searchParams.physicalProcessor" placeholder="Physical Processor">
-    </div>
+    </div> -->
+    <select class="form-control col-sm-10" id="physicalProcessor" name="physicalProcessor" [(ngModel)]="searchParams.physicalProcessor">
+      <option *ngFor="let val of searchParamAttributes.physicalProcessor" name="physicalProcessor"> {{val}} </option>
+    </select>
   </div>
 
   <div class="form-group row">
     <label for="memory" class="col-sm-2 col-form-label">Memory</label>
-    <div class="col-sm-10">
+    <!-- <div class="col-sm-10">
       <input type="text" class="form-control" id="memory" name="memory" [(ngModel)]="searchParams.memory" placeholder="Memory">
-    </div>
+    </div> -->
+    <select class="form-control col-sm-10" id="memory" name="memory" [(ngModel)]="searchParams.memory">
+      <option *ngFor="let val of searchParamAttributes.memory" name="memory"> {{val}} </option>
+    </select>
   </div>
 
   <div class="form-group row">
     <label for="vcpu" class="col-sm-2 col-form-label">VCPU</label>
-    <div class="col-sm-10">
+    <!-- <div class="col-sm-10">
       <input type="text" class="form-control" id="vcpu" name="vcpu" [(ngModel)]="searchParams.vcpu" placeholder="VCPU">
-    </div>
+    </div> -->
+    <select class="form-control col-sm-10" id="vcpu" name="vcpu" [(ngModel)]="searchParams.vcpu">
+      <option *ngFor="let val of searchParamAttributes.vcpu" name="vcpu"> {{val}} </option>
+    </select>
   </div>
 
   <div class="form-group row">
     <label for="storage" class="col-sm-2 col-form-label">Storage</label>
-    <div class="col-sm-10">
+    <!-- <div class="col-sm-10">
       <input type="text" class="form-control" id="storage" name="storage" [(ngModel)]="searchParams.storage" placeholder="Storage">
-    </div>
+    </div> -->
+    <select class="form-control col-sm-10" id="storage" name="storage" [(ngModel)]="searchParams.storage">
+      <option *ngFor="let val of searchParamAttributes.storage" name="storage"> {{val}} </option>
+    </select>
+
   </div>
 
-  <button type="submit" class="btn btn-primary mb-2" (click)="displayParams()">Search Instances</button>
+  <button type="submit" class="btn btn-primary mb-2" [disabled]="searchForm.untouched">Search Instances</button>
 </form>
