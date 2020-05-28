@@ -15,13 +15,13 @@ export class HeaderComponent implements OnInit {
 
   public currentRegion:string;
 
-  constructor(private awsUtilService: AWSUtilsService) { }
+  constructor(private awsUtil: AWSUtilsService) { }
 
   ngOnInit(): void {
   }
 
-  selectRegion(region) {
+  selectRegion(region: string) {
     this.currentRegion = region;
-    this.awsUtilService.setRegion(this.currentRegion);
+    this.awsUtil.setRegion(region);
   }
 }

@@ -36,24 +36,26 @@ export class Ec2SearchComponent implements OnInit {
     clockSpeed: [],
     physicalProcessor: [],
     memory: [],
-    storagevcpu: [],
     storage: [],
     vcpu: []
   };
+  
+  public currRegion: string;
 
   constructor(private awsUtil: AWSUtilsService) { }
 
   ngOnInit(): void {
-    // const ifAttribs = this.awsUtil.getValsForAttribute('AmazonEC2', 'instanceFamily').then(attribs => {
-    //   console.log(attribs);
-    // });
-    // console.log(ifAttribs);
-
-    for(let attrib in this.searchParamAttributes) {
-      this.awsUtil.getValsForAttribute('AmazonEC2', attrib).then(vals => {
-        this.searchParamAttributes[attrib] = vals;
-      });
-    }
+    // Get all the attributes and change in the form when region changes
+    this.awsUtil.getRegion.subscribe((r) => {
+      this.currRegion = r;
+      console.log("Getting all attributes' vals in EC2 search from region: "+ this.currRegion);
+      for(let attrib in this.searchParamAttributes) {
+        this.awsUtil.getValsForAttribute(this.currRegion, 'AmazonEC2', attrib).then(vals => {
+          this.searchParamAttributes[attrib] = vals;
+          this.searchParams[attrib] = vals[0];      // For default values
+        });
+      }
+    });
   }
 
   displayParams() {

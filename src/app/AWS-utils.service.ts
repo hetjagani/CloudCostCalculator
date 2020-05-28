@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import * as AWS from 'aws-sdk';
-import { RouterModule } from '@angular/router';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,24 +8,24 @@ import { RouterModule } from '@angular/router';
 export class AWSUtilsService {
   
   private creds; 
-  private region: string = 'us-east-1';
+  public getRegion: Observable<string>;
+  private region: Subject<string> = new Subject<string>();
   
   constructor() { 
     this.creds = new AWS.Credentials("AKIA5OTORPR7LQ3DVENO", "LhWfTuFuZan9x+V0SlCgsInHZzpwvJp2mWH8i/aS");
+    this.getRegion = this.region.asObservable();
+    this.setRegion('us-east-1');
   }
 
-  // Not working as expected
-  set setRegion(r: string) {
-    this.region = r;
-    console.log(`${this.region} from aws`);
+  setRegion(r) {
+    this.region.next(r);
   }
 
-  async getValsForAttribute(serviceName: string, attributeName: string) {
+  async getValsForAttribute(currRegion:string, serviceName: string, attributeName: string) {
     let pricing = new AWS.Pricing({
-      region: this.region,
+      region: currRegion,
       credentials: this.creds
     });
-    console.log("getting VALS from region: "+ this.region);
     return await this.getAllAttribVals(pricing, serviceName, attributeName);
   }
 
