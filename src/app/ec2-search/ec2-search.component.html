@@ -11,19 +11,26 @@
     memory
     vcpu
     storage
+    instanceType
     
     networkPerformance
     ebsOptimized
     volumeType
-    instanceType
     location (already chosen the availability zone) -->
-<form #searchForm="ngForm" (submit)="displayParams()">
+<form #searchForm="ngForm" (submit)="searchInstances()">
   <div class="form-group row">
     <label for="instanceFamily" class="col-sm-2 col-form-label">Instance Family</label>
     <select class="form-control col-sm-10" id="instanceFamily" name="instanceFamily" [(ngModel)]="searchParams.instanceFamily">
       <option *ngFor="let val of searchParamAttributes.instanceFamily" name="instanceFamily"> {{val}} </option>
     </select>
   </div>
+
+  <!-- <div class="form-group row">
+    <label for="instanceType" class="col-sm-2 col-form-label">Instance Type</label>
+    <select class="form-control col-sm-10" id="instanceType" name="instanceType" [(ngModel)]="searchParams.instanceType">
+      <option *ngFor="let val of searchParamAttributes.instanceType" name="instanceType"> {{val}} </option>
+    </select>
+  </div> -->
 
   <div class="form-group row">
     <label for="operatingSystem" class="col-sm-2 col-form-label">Operating System</label>

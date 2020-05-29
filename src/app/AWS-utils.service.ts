@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
 import * as AWS from 'aws-sdk';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,26 +7,26 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 export class AWSUtilsService {
   
   private creds;
-  private pricing;
+  public pricing;
   
   constructor() { 
     this.creds = new AWS.Credentials("AKIA5OTORPR7LQ3DVENO", "LhWfTuFuZan9x+V0SlCgsInHZzpwvJp2mWH8i/aS");
     this.pricing = new AWS.Pricing({
-      region: 'us-east-1',
+      region: 'ap-south-1',
       credentials: this.creds
     });
   }
 
   async getValsForAttribute(serviceName: string, attributeName: string) {
-    return await this.getAllAttribVals(this.pricing, serviceName, attributeName);
+    return await this.getAllAttribVals(serviceName, attributeName);
   }
 
-  private getValues(pricing, nt, params, vals = []) {
+  private getValues(nt, params, vals = []) {
     if(nt) {
       params.NextToken = nt;
     }
   
-    return pricing.getAttributeValues(params).promise().then(data => {
+    return this.pricing.getAttributeValues(params).promise().then(data => {
       data.AttributeValues.forEach(element => {
         vals.push(element.Value);
       });
@@ -40,12 +39,12 @@ export class AWSUtilsService {
     }).catch(err => console.log(err));
   }
   
-  private getAllAttribVals(pricing, service, attribName) {
+  private getAllAttribVals(service, attribName) {
     let attrib_params = {
       ServiceCode: service,
       AttributeName: attribName,
       MaxResults: 100
     }
-    return this.getValues(pricing, null, attrib_params);
+    return this.getValues(null, attrib_params);
   }
 }
