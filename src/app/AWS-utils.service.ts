@@ -7,26 +7,19 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 })
 export class AWSUtilsService {
   
-  private creds; 
-  public getRegion: Observable<string>;
-  private region: Subject<string> = new Subject<string>();
+  private creds;
+  private pricing;
   
   constructor() { 
     this.creds = new AWS.Credentials("AKIA5OTORPR7LQ3DVENO", "LhWfTuFuZan9x+V0SlCgsInHZzpwvJp2mWH8i/aS");
-    this.getRegion = this.region.asObservable();
-    this.setRegion('us-east-1');
-  }
-
-  setRegion(r) {
-    this.region.next(r);
-  }
-
-  async getValsForAttribute(currRegion:string, serviceName: string, attributeName: string) {
-    let pricing = new AWS.Pricing({
-      region: currRegion,
+    this.pricing = new AWS.Pricing({
+      region: 'us-east-1',
       credentials: this.creds
     });
-    return await this.getAllAttribVals(pricing, serviceName, attributeName);
+  }
+
+  async getValsForAttribute(serviceName: string, attributeName: string) {
+    return await this.getAllAttribVals(this.pricing, serviceName, attributeName);
   }
 
   private getValues(pricing, nt, params, vals = []) {

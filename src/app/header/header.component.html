@@ -29,17 +29,6 @@
       </li>
     </ul>
 
-    <ul class="nav navbar-nav navbar-right">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="regionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true">
-          Region: {{currentRegion}}
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="regionDropdown">
-          <button *ngFor="let r of allRegions" class="dropdown-item" (click)="selectRegion(r)"> {{ r }} </button>
-        </div>
-      </li>
-    </ul>
-
   </div>
 
 </nav>

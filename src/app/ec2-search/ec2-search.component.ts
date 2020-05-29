@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
 import { AWSUtilsService } from '../AWS-utils.service';
 
 
@@ -10,7 +9,8 @@ interface IEC2SearchParams {
   physicalProcessor: string,
   memory: string,
   vcpu: string,
-  storage: string
+  storage: string,
+  location: string
 }
 
 @Component({
@@ -27,7 +27,8 @@ export class Ec2SearchComponent implements OnInit {
     physicalProcessor: "",
     memory: "",
     vcpu: "",
-    storage: ""
+    storage: "",
+    location: ""
   };
 
   public searchParamAttributes = {
@@ -37,7 +38,8 @@ export class Ec2SearchComponent implements OnInit {
     physicalProcessor: [],
     memory: [],
     storage: [],
-    vcpu: []
+    vcpu: [],
+    location: []
   };
   
   public currRegion: string;
@@ -45,17 +47,13 @@ export class Ec2SearchComponent implements OnInit {
   constructor(private awsUtil: AWSUtilsService) { }
 
   ngOnInit(): void {
-    // Get all the attributes and change in the form when region changes
-    this.awsUtil.getRegion.subscribe((r) => {
-      this.currRegion = r;
-      console.log("Getting all attributes' vals in EC2 search from region: "+ this.currRegion);
-      for(let attrib in this.searchParamAttributes) {
-        this.awsUtil.getValsForAttribute(this.currRegion, 'AmazonEC2', attrib).then(vals => {
-          this.searchParamAttributes[attrib] = vals;
-          this.searchParams[attrib] = vals[0];      // For default values
-        });
-      }
-    });
+    // Get all the attributes values and fill in the form drop downs
+    for(let attrib in this.searchParamAttributes) {
+      this.awsUtil.getValsForAttribute('AmazonEC2', attrib).then(vals => {
+        this.searchParamAttributes[attrib] = vals;
+        this.searchParams[attrib] = vals[0];      // For default values
+      });
+    }
   }
 
   displayParams() {

@@ -18,7 +18,6 @@
     instanceType
     location (already chosen the availability zone) -->
 <form #searchForm="ngForm" (submit)="displayParams()">
-  <div *ngIf="!currRegion" class="alert alert-danger" role="alert">Select Region from the top right corner</div>
   <div class="form-group row">
     <label for="instanceFamily" class="col-sm-2 col-form-label">Instance Family</label>
     <select class="form-control col-sm-10" id="instanceFamily" name="instanceFamily" [(ngModel)]="searchParams.instanceFamily">
@@ -66,7 +65,13 @@
     <select class="form-control col-sm-10" id="storage" name="storage" [(ngModel)]="searchParams.storage">
       <option *ngFor="let val of searchParamAttributes.storage" name="storage"> {{val}} </option>
     </select>
+  </div>
 
+  <div class="form-group row">
+    <label for="location" class="col-sm-2 col-form-label">Location</label>
+    <select class="form-control col-sm-10" id="location" name="location" [(ngModel)]="searchParams.location">
+      <option *ngFor="let val of searchParamAttributes.location" name="locaton"> {{val}} </option>
+    </select>
   </div>
 
   <button type="submit" class="btn btn-primary mb-2">Search Instances</button>
