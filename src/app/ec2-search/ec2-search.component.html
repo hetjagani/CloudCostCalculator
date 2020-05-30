@@ -1,7 +1,9 @@
-<h3>Select Service Parameters to search instances </h3>
-<!-- gpuMemory
+<div *ngIf="loading;then loadBlock; else formBlock"></div>
+<ng-template #formBlock>
+  <h3>Select Service Parameters to search instances </h3>
+  <!-- gpuMemory
   processorFeatures -->
-  
+
   <!-- 
     Selected Parameters to search for EC2 instances
     instanceFamily
@@ -17,69 +19,74 @@
     ebsOptimized
     volumeType
     location (already chosen the availability zone) -->
-<form #searchForm="ngForm" (submit)="searchInstances()">
-  <div class="form-group row">
-    <label for="instanceFamily" class="col-sm-2 col-form-label">Instance Family</label>
-    <select class="form-control col-sm-10" id="instanceFamily" name="instanceFamily" [(ngModel)]="searchParams.instanceFamily">
-      <option *ngFor="let val of searchParamAttributes.instanceFamily" name="instanceFamily"> {{val}} </option>
-    </select>
-  </div>
+  <form #searchForm="ngForm" (submit)="searchInstances()">
+    <div class="form-group row">
+      <label for="instanceFamily" class="col-sm-2 col-form-label">Instance Family</label>
+      <select class="form-control col-sm-10" id="instanceFamily" name="instanceFamily" [(ngModel)]="searchParams.instanceFamily">
+        <option *ngFor="let val of searchParamAttributes.instanceFamily" name="instanceFamily"> {{val}} </option>
+      </select>
+    </div>
 
-  <!-- <div class="form-group row">
-    <label for="instanceType" class="col-sm-2 col-form-label">Instance Type</label>
-    <select class="form-control col-sm-10" id="instanceType" name="instanceType" [(ngModel)]="searchParams.instanceType">
-      <option *ngFor="let val of searchParamAttributes.instanceType" name="instanceType"> {{val}} </option>
-    </select>
-  </div> -->
+    <!-- <div class="form-group row">
+      <label for="instanceType" class="col-sm-2 col-form-label">Instance Type</label>
+      <select class="form-control col-sm-10" id="instanceType" name="instanceType" [(ngModel)]="searchParams.instanceType">
+        <option *ngFor="let val of searchParamAttributes.instanceType" name="instanceType"> {{val}} </option>
+      </select>
+    </div> -->
 
-  <div class="form-group row">
-    <label for="operatingSystem" class="col-sm-2 col-form-label">Operating System</label>
-    <select class="form-control col-sm-10" id="operatingSystem" name="operatingSystem" [(ngModel)]="searchParams.operatingSystem">
-      <option *ngFor="let val of searchParamAttributes.operatingSystem" name="operatingSystem"> {{val}} </option>
-    </select>
-  </div>
+    <div class="form-group row">
+      <label for="operatingSystem" class="col-sm-2 col-form-label">Operating System</label>
+      <select class="form-control col-sm-10" id="operatingSystem" name="operatingSystem" [(ngModel)]="searchParams.operatingSystem">
+        <option *ngFor="let val of searchParamAttributes.operatingSystem" name="operatingSystem"> {{val}} </option>
+      </select>
+    </div>
 
-  <div class="form-group row">
-    <label for="clockSpeed" class="col-sm-2 col-form-label">Clock Speed</label>
-    <select class="form-control col-sm-10" id="clockSpeed" name="clockSpeed" [(ngModel)]="searchParams.clockSpeed">
-      <option *ngFor="let val of searchParamAttributes.clockSpeed" name="clockSpeed"> {{val}} </option>
-    </select>
-  </div>
+    <div class="form-group row">
+      <label for="clockSpeed" class="col-sm-2 col-form-label">Clock Speed</label>
+      <select class="form-control col-sm-10" id="clockSpeed" name="clockSpeed" [(ngModel)]="searchParams.clockSpeed">
+        <option *ngFor="let val of searchParamAttributes.clockSpeed" name="clockSpeed"> {{val}} </option>
+      </select>
+    </div>
 
-  <div class="form-group row">
-    <label for="physicalProcessor" class="col-sm-2 col-form-label">Physical Processor</label>
-    <select class="form-control col-sm-10" id="physicalProcessor" name="physicalProcessor" [(ngModel)]="searchParams.physicalProcessor">
-      <option *ngFor="let val of searchParamAttributes.physicalProcessor" name="physicalProcessor"> {{val}} </option>
-    </select>
-  </div>
+    <div class="form-group row">
+      <label for="physicalProcessor" class="col-sm-2 col-form-label">Physical Processor</label>
+      <select class="form-control col-sm-10" id="physicalProcessor" name="physicalProcessor" [(ngModel)]="searchParams.physicalProcessor">
+        <option *ngFor="let val of searchParamAttributes.physicalProcessor" name="physicalProcessor"> {{val}} </option>
+      </select>
+    </div>
 
-  <div class="form-group row">
-    <label for="memory" class="col-sm-2 col-form-label">Memory</label>
-    <select class="form-control col-sm-10" id="memory" name="memory" [(ngModel)]="searchParams.memory">
-      <option *ngFor="let val of searchParamAttributes.memory" name="memory"> {{val}} </option>
-    </select>
-  </div>
+    <div class="form-group row">
+      <label for="memory" class="col-sm-2 col-form-label">Memory</label>
+      <select class="form-control col-sm-10" id="memory" name="memory" [(ngModel)]="searchParams.memory">
+        <option *ngFor="let val of searchParamAttributes.memory" name="memory"> {{val}} </option>
+      </select>
+    </div>
 
-  <div class="form-group row">
-    <label for="vcpu" class="col-sm-2 col-form-label">VCPU</label>
-    <select class="form-control col-sm-10" id="vcpu" name="vcpu" [(ngModel)]="searchParams.vcpu">
-      <option *ngFor="let val of searchParamAttributes.vcpu" name="vcpu"> {{val}} </option>
-    </select>
-  </div>
+    <div class="form-group row">
+      <label for="vcpu" class="col-sm-2 col-form-label">VCPU</label>
+      <select class="form-control col-sm-10" id="vcpu" name="vcpu" [(ngModel)]="searchParams.vcpu">
+        <option *ngFor="let val of searchParamAttributes.vcpu" name="vcpu"> {{val}} </option>
+      </select>
+    </div>
 
-  <div class="form-group row">
-    <label for="storage" class="col-sm-2 col-form-label">Storage</label>
-    <select class="form-control col-sm-10" id="storage" name="storage" [(ngModel)]="searchParams.storage">
-      <option *ngFor="let val of searchParamAttributes.storage" name="storage"> {{val}} </option>
-    </select>
-  </div>
+    <div class="form-group row">
+      <label for="storage" class="col-sm-2 col-form-label">Storage</label>
+      <select class="form-control col-sm-10" id="storage" name="storage" [(ngModel)]="searchParams.storage">
+        <option *ngFor="let val of searchParamAttributes.storage" name="storage"> {{val}} </option>
+      </select>
+    </div>
 
-  <div class="form-group row">
-    <label for="location" class="col-sm-2 col-form-label">Location</label>
-    <select class="form-control col-sm-10" id="location" name="location" [(ngModel)]="searchParams.location">
-      <option *ngFor="let val of searchParamAttributes.location" name="locaton"> {{val}} </option>
-    </select>
-  </div>
+    <div class="form-group row">
+      <label for="location" class="col-sm-2 col-form-label">Location</label>
+      <select class="form-control col-sm-10" id="location" name="location" [(ngModel)]="searchParams.location">
+        <option *ngFor="let val of searchParamAttributes.location" name="locaton"> {{val}} </option>
+      </select>
+    </div>
 
-  <button type="submit" class="btn btn-primary mb-2">Search Instances</button>
-</form>
+    <button type="submit" class="btn btn-primary mb-2">Search Instances</button>
+  </form>
+</ng-template>
+
+<ng-template #loadBlock>
+  <app-loader></app-loader>
+</ng-template>

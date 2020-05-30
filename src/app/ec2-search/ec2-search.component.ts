@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AWSUtilsService } from '../AWS-utils.service';
 import { Ec2InstanceSearchService } from '../ec2-instance-search.service';
+import { LoaderService } from '../loader.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 interface IEC2SearchParams {
@@ -46,14 +48,18 @@ export class Ec2SearchComponent implements OnInit {
     // instanceType: []
   };
   
-  public currRegion: string;
+  public loading: boolean = false;
 
   constructor(private awsUtil: AWSUtilsService, 
-              private ec2Search: Ec2InstanceSearchService) { }
+              private ec2Search: Ec2InstanceSearchService,
+              private loadingService: LoaderService,
+              private router: Router,
+              private activeRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     // TODO: Put (none) in the list of values if anyone want to remove any param from search.
     // Get all the attributes values and fill in the form drop downs
+    this.loading = false;
     for(let attrib in this.searchParamAttributes) {
       this.awsUtil.getValsForAttribute('AmazonEC2', attrib).then(vals => {
         this.searchParamAttributes[attrib] = vals;
@@ -63,10 +69,13 @@ export class Ec2SearchComponent implements OnInit {
   }
 
   searchInstances() {
-    console.log("searching...");
-    console.log(this.searchParams);
+    this.loading = true;
+    this.loadingService.showLoader();
     this.ec2Search.searchInstances(this.searchParams).then(data => {
-      console.log(data);
+      // console.log(data);
+      this.loading = false;
+      this.loadingService.hideLoader();
+      this.router.navigate(['searchresults'], {relativeTo: this.activeRoute, state: { res: data }});
     }); 
   }
 

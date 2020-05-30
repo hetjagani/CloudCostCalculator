@@ -9,6 +9,9 @@ import { HomeComponent } from './home/home.component';
 import { Ec2SearchComponent } from './ec2-search/ec2-search.component';
 import { AWSUtilsService } from './AWS-utils.service';
 import { Ec2InstanceSearchService } from './ec2-instance-search.service';
+import { LoaderService } from './loader.service';
+import { LoaderComponent } from './loader/loader.component';
+import { Ec2SearchResultsComponent } from './ec2-search-results/ec2-search-results.component';
 
 
 @NgModule({
@@ -16,14 +19,20 @@ import { Ec2InstanceSearchService } from './ec2-instance-search.service';
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    Ec2SearchComponent
+    Ec2SearchComponent,
+    LoaderComponent,
+    Ec2SearchResultsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule
   ],
-  providers: [AWSUtilsService, Ec2InstanceSearchService],
+  providers: [
+    AWSUtilsService, 
+    Ec2InstanceSearchService,
+    LoaderService
+  ],
   bootstrap: [AppComponent, HeaderComponent]
 })
 export class AppModule { }
