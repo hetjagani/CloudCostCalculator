@@ -3,6 +3,7 @@ import { AWSUtilsService } from '../AWS-utils.service';
 import { Ec2InstanceSearchService } from '../ec2-instance-search.service';
 import { LoaderService } from '../loader.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { StateService } from '../state-service.service';
 
 
 interface IEC2SearchParams {
@@ -25,18 +26,28 @@ interface IEC2SearchParams {
 export class Ec2SearchComponent implements OnInit {
 
   public searchParams: IEC2SearchParams = {
-    instanceFamily: "",
-    operatingSystem: "",
-    clockSpeed: "",
-    physicalProcessor: "",
-    memory: "",
-    vcpu: "",
-    storage: "",
-    location: "",
+    instanceFamily: "none",
+    operatingSystem: "none",
+    clockSpeed: "none",
+    physicalProcessor: "none",
+    memory: "none",
+    vcpu: "none",
+    storage: "none",
+    location: "none",
     // instanceType: ""
   };
 
-  public searchParamAttributes = {
+  public searchParamAttributes : {
+    instanceFamily: string[],
+    operatingSystem: string[],
+    clockSpeed: string[],
+    physicalProcessor: string[],
+    memory: string[],
+    storage: string[],
+    vcpu: string[],
+    location: string[],
+    // instanceType: []
+  } = {
     instanceFamily: [],
     operatingSystem: [],
     clockSpeed: [],
@@ -45,7 +56,6 @@ export class Ec2SearchComponent implements OnInit {
     storage: [],
     vcpu: [],
     location: [],
-    // instanceType: []
   };
   
   public loading: boolean = false;
@@ -54,16 +64,18 @@ export class Ec2SearchComponent implements OnInit {
               private ec2Search: Ec2InstanceSearchService,
               private loadingService: LoaderService,
               private router: Router,
-              private activeRoute: ActivatedRoute) { }
+              private activeRoute: ActivatedRoute,
+              private stateService: StateService) { }
 
   ngOnInit(): void {
-    // TODO: Put (none) in the list of values if anyone want to remove any param from search.
     // Get all the attributes values and fill in the form drop downs
     this.loading = false;
     for(let attrib in this.searchParamAttributes) {
       this.awsUtil.getValsForAttribute('AmazonEC2', attrib).then(vals => {
+        // console.log(vals);
         this.searchParamAttributes[attrib] = vals;
-        this.searchParams[attrib] = vals[0];      // For default values
+        this.searchParamAttributes[attrib].unshift("none");
+        // console.log(this.searchParamAttributes[attrib]);
       });
     }
   }
@@ -75,7 +87,8 @@ export class Ec2SearchComponent implements OnInit {
       // console.log(data);
       this.loading = false;
       this.loadingService.hideLoader();
-      this.router.navigate(['searchresults'], {relativeTo: this.activeRoute, state: { res: data }});
+      this.stateService.setData(data);
+      this.router.navigate(['searchresults'], {relativeTo: this.activeRoute});
     }); 
   }
 

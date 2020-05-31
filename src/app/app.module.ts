@@ -12,6 +12,7 @@ import { Ec2InstanceSearchService } from './ec2-instance-search.service';
 import { LoaderService } from './loader.service';
 import { LoaderComponent } from './loader/loader.component';
 import { Ec2SearchResultsComponent } from './ec2-search-results/ec2-search-results.component';
+import { StateService } from './state-service.service';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { Ec2SearchResultsComponent } from './ec2-search-results/ec2-search-resul
   providers: [
     AWSUtilsService, 
     Ec2InstanceSearchService,
-    LoaderService
+    LoaderService,
+    StateService
   ],
   bootstrap: [AppComponent, HeaderComponent]
 })

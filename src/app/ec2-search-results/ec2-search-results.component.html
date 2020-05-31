@@ -1,4 +1,46 @@
-<p>ec2-search-results works!</p>
-<p>
-  {{searchResData}}
-</p>
+<!-- product.attributes.instanceFamily
+product.attributes.instanceType
+product.attributes.instanceType
+priceDimensions.pricePerUnit.USD
+priceDimensions.unit
+priceDimensions.description -->
+
+<div class="main container-fluid" *ngIf="searchResData; else noResFound">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Instance Family</th>
+        <th scope="col">Instance Type</th>
+        <th scope="col">Price per unit</th>
+        <th scope="col">Unit</th>
+        <th scope="col">Description</th>
+        <th scope="col">More Details</th>
+        <th scope="col">Add to Inventory</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of searchResData">
+        <td>{{ item.product.attributes.instanceFamily }}</td>
+        <td>{{ item.product.attributes.instanceType }}</td>
+        <td *ngIf="item.priceDimensions.pricePerUnit">{{ item.priceDimensions.pricePerUnit.USD | currency }}</td>
+        <td>{{ item.priceDimensions.unit }}</td>
+        <td>{{ item.priceDimensions.description }}</td>
+        <td>
+          <button type="button" class="btn btn-info">Details</button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-success">ADD</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #noResFound>
+<div class="container-fluid">
+  <h2>
+    Please try another search parameters, no results found for these parameters. <br>
+    <a routerLink="/ec2" href="#">Click here to search ec2 instances</a>
+  </h2>
+</div>
+</ng-template>

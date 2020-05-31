@@ -9,15 +9,19 @@ export class Ec2InstanceSearchService {
 
   constructor(private awsUtil: AWSUtilsService) { }
 
-  searchInstances(searchParams: any) {
+  async searchInstances(searchParams: any) {
     let filters = [];
     let requestParams = {
       ServiceCode: 'AmazonEC2',
       FormatVersion: "aws_v1",
       MaxResults: 100,
-      Filters: []
+      Filters: [],
+      NextToken: null
     }
     for(let p in searchParams) {
+      if(searchParams[p] === "none"){
+        continue;
+      }
       let f = {
         Field: p,
         Type: "TERM_MATCH",
@@ -30,8 +34,19 @@ export class Ec2InstanceSearchService {
 
     // console.log(requestParams);
 
-    return this.awsUtil.pricing.getProducts(requestParams).promise().then(data => {
-      let returnArr = [];
+    return await this.getAllProducts(requestParams);
+  }
+
+  private getAllProducts(requestParams) {
+    return this.getSearchProduct(null, requestParams);
+  }
+
+  private getSearchProduct(nt, params, vals = []) {
+    if(nt) {
+      params.NextToken = nt;
+    }
+
+    return this.awsUtil.pricing.getProducts(params).promise().then(data => {
       let pricelist = data.PriceList;
       for(let element of pricelist) {
         let returnObj = { product: {}, priceDimensions: {} };
@@ -43,9 +58,13 @@ export class Ec2InstanceSearchService {
             returnObj.priceDimensions = onDemand[p].priceDimensions[pd];
           }
         }
-        returnArr.push(returnObj);
+        vals.push(returnObj);
       }
-      return returnArr;
-    });
+      if(data.NextToken) {
+        return this.getSearchProduct(data.NextToken, params, vals);
+      }else {
+        return vals; 
+      }
+    }).catch(err => console.error(err));
   }
 }

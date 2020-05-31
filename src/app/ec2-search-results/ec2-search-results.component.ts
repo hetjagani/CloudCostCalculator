@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StateService } from '../state-service.service';
 
 @Component({
   selector: 'app-ec2-search-results',
@@ -9,10 +10,10 @@ export class Ec2SearchResultsComponent implements OnInit {
 
   public searchResData: [];
 
-  constructor() { }
+  constructor(private stateService: StateService) { }
 
   ngOnInit(): void {
-    this.searchResData = history.state.res;
+    this.searchResData = this.stateService.getData();
     console.log(this.searchResData);
   }
 
