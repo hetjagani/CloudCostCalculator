@@ -26,7 +26,7 @@ priceDimensions.description -->
         <td>{{ item.priceDimensions.unit }}</td>
         <td>{{ item.priceDimensions.description }}</td>
         <td>
-          <button type="button" class="btn btn-info">Details</button>
+          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
         </td>
         <td>
           <button type="button" class="btn btn-success">ADD</button>
@@ -34,6 +34,28 @@ priceDimensions.description -->
       </tr>
     </tbody>
   </table>
+
+  <div class="modal fade" id="instanceDetails" tabindex="-1" role="dialog" aria-labelledby="instanceDetailsTitle" aria-hidden="true" *ngIf="selectedInstance">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="instanceDetailsTitle">{{ selectedInstance.priceDimensions.description }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul *ngFor="let attrib of selectedInstance.attributes">
+            <li> <b>{{attrib.key}}</b>: {{attrib.val}}</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <ng-template #noResFound>
