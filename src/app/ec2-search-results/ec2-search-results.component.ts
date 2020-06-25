@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StateService } from '../state-service.service';
+import { InventoryService } from '../inventory.service';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,8 @@ export class Ec2SearchResultsComponent implements OnInit {
   
   public selectedInstance;
 
-  constructor(private stateService: StateService) { }
+  constructor(private stateService: StateService,
+              private inventory: InventoryService) { }
 
   ngOnInit(): void {
     this.searchResData = this.stateService.getData();
@@ -34,6 +36,10 @@ export class Ec2SearchResultsComponent implements OnInit {
 
     // console.log(this.selectedInstance);
     $('#instanceDetails').modal()
+  }
+
+  addToInventory(ins) {
+    this.inventory.addEC2Item(ins);
   }
 
 }

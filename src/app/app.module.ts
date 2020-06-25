@@ -13,6 +13,7 @@ import { LoaderService } from './loader.service';
 import { LoaderComponent } from './loader/loader.component';
 import { Ec2SearchResultsComponent } from './ec2-search-results/ec2-search-results.component';
 import { StateService } from './state-service.service';
+import { InventoryService } from './inventory.service';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { StateService } from './state-service.service';
     AWSUtilsService, 
     Ec2InstanceSearchService,
     LoaderService,
-    StateService
+    StateService,
+    InventoryService
   ],
   bootstrap: [AppComponent, HeaderComponent]
 })
