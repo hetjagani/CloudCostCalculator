@@ -1,0 +1,55 @@
+<div *ngIf="loading;then loadBlock; else formBlock"></div>
+<ng-template #formBlock>
+  <h3>Select Service Parameters</h3>
+  <!-- https://aws.amazon.com/s3/pricing/ -->
+
+  <!-- 
+    location
+    feeCode
+    feeDescription  
+    usageType
+    volumeType
+  -->
+  <form #searchForm="ngForm" (submit)="searchS3()">
+    <div class="form-group row">
+      <label for="location" class="col-sm-2 col-form-label">Location</label>
+      <select class="form-control col-sm-10" id="location" name="location" [(ngModel)]="s3SearchParams.location">
+        <option *ngFor="let val of searchParamAttributes.location" name="location"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="feeCode" class="col-sm-2 col-form-label">Fee Code</label>
+      <select class="form-control col-sm-10" id="feeCode" name="feeCode" [(ngModel)]="s3SearchParams.feeCode">
+        <option *ngFor="let val of searchParamAttributes.feeCode" name="feeCode"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="feeDescription" class="col-sm-2 col-form-label">Fee Description</label>
+      <select class="form-control col-sm-10" id="feeDescription" name="feeDescription" [(ngModel)]="s3SearchParams.feeDescription">
+        <option *ngFor="let val of searchParamAttributes.feeDescription" name="feeDescription"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="usageType" class="col-sm-2 col-form-label">Usage Type</label>
+      <select class="form-control col-sm-10" id="usageType" name="usageType" [(ngModel)]="s3SearchParams.usageType">
+        <option *ngFor="let val of searchParamAttributes.usageType" name="usageType"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="volumeType" class="col-sm-2 col-form-label">Volume Type</label>
+      <select class="form-control col-sm-10" id="volumeType" name="volumeType" [(ngModel)]="s3SearchParams.volumeType">
+        <option *ngFor="let val of searchParamAttributes.volumeType" name="volumeType"> {{val}} </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mb-2">Search</button>
+  </form>
+</ng-template>
+
+<ng-template #loadBlock>
+  <app-loader></app-loader>
+</ng-template>

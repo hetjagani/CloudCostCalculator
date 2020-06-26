@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AWSUtilsService } from '../AWS-utils.service';
+import { AWSUtilsService } from '../services/AWS-utils.service';
 
 @Component({
   selector: 'app-header',

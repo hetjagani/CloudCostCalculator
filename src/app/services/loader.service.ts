@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Loader } from './loader/loader.model';
+import { Loader } from '../loader/loader.model';
 
 @Injectable({
   providedIn: 'root'

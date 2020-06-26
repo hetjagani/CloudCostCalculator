@@ -7,13 +7,14 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { Ec2SearchComponent } from './ec2-search/ec2-search.component';
-import { AWSUtilsService } from './AWS-utils.service';
-import { Ec2InstanceSearchService } from './ec2-instance-search.service';
-import { LoaderService } from './loader.service';
+import { AWSUtilsService } from './services/AWS-utils.service';
+import { LoaderService } from './services/loader.service';
 import { LoaderComponent } from './loader/loader.component';
 import { Ec2SearchResultsComponent } from './ec2-search-results/ec2-search-results.component';
-import { StateService } from './state-service.service';
-import { InventoryService } from './inventory.service';
+import { StateService } from './services/state-service.service';
+import { InventoryService } from './services/inventory.service';
+import { S3SearchComponent } from './s3-search/s3-search.component';
+import { S3SearchResultsComponent } from './s3-search-results/s3-search-results.component';
 
 
 @NgModule({
@@ -23,7 +24,9 @@ import { InventoryService } from './inventory.service';
     HomeComponent,
     Ec2SearchComponent,
     LoaderComponent,
-    Ec2SearchResultsComponent
+    Ec2SearchResultsComponent,
+    S3SearchComponent,
+    S3SearchResultsComponent
   ],
   imports: [
     BrowserModule,
@@ -32,10 +35,9 @@ import { InventoryService } from './inventory.service';
   ],
   providers: [
     AWSUtilsService, 
-    Ec2InstanceSearchService,
     LoaderService,
     StateService,
-    InventoryService
+    InventoryService,
   ],
   bootstrap: [AppComponent, HeaderComponent]
 })

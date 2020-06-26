@@ -1,0 +1,72 @@
+<!-- product.attributes.feeDescription
+product.attributes.operation
+product.attributes.usageType
+priceDimensions.pricePerUnit.USD
+priceDimensions.unit
+priceDimensions.description -->
+
+
+<div class="main container-fluid" *ngIf="searchResData; else noResFound">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Fee Description</th>
+        <th scope="col">Operation</th>
+        <th scope="col">Usage Type</th>
+        <th scope="col">Price per unit</th>
+        <th scope="col">Unit</th>
+        <th scope="col">Description</th>
+        <th scope="col">More Details</th>
+        <th scope="col">Add to Inventory</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of searchResData">
+        <td>{{ item.product.attributes.feeDescription }}</td>
+        <td>{{ item.product.attributes.operation }}</td>
+        <td>{{ item.product.attributes.usagetype }}</td>
+        <td *ngIf="item.priceDimensions.pricePerUnit">{{ item.priceDimensions.pricePerUnit.USD | currency }}</td>
+        <td>{{ item.priceDimensions.unit }}</td>
+        <td>{{ item.priceDimensions.description }}</td>
+        <td>
+          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#moreDetails" (click)="showDetails(item)">Details</button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-success" (click)="addToInventory(item)">ADD</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="modal fade" id="moreDetails" tabindex="-1" role="dialog" aria-labelledby="moreDetailsTitle" aria-hidden="true" *ngIf="selectedS3">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="moreDetailsTitle">{{ selectedS3.priceDimensions.description }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul *ngFor="let attrib of selectedS3.attributes">
+            <li> <b>{{attrib.key}}</b>: {{attrib.val}}</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<ng-template #noResFound>
+  <div class="container-fluid">
+    <h2>
+      Please try another search parameters, no results found for these parameters. <br>
+      <a routerLink="/s3" href="#">Click here to search S3</a>
+    </h2>
+  </div>
+</ng-template>

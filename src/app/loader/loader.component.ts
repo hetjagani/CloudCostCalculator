@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LoaderService } from '../loader.service';
+import { LoaderService } from '../services/loader.service';
 import { Loader } from './loader.model';
 
 @Component({

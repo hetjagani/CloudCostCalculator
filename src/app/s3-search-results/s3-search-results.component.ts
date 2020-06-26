@@ -4,15 +4,14 @@ import { InventoryService } from '../services/inventory.service';
 declare var $: any;
 
 @Component({
-  selector: 'app-ec2-search-results',
-  templateUrl: './ec2-search-results.component.html',
-  styleUrls: ['./ec2-search-results.component.css']
+  selector: 'app-s3-search-results',
+  templateUrl: './s3-search-results.component.html',
+  styleUrls: ['./s3-search-results.component.css']
 })
-export class Ec2SearchResultsComponent implements OnInit {
+export class S3SearchResultsComponent implements OnInit {
 
   public searchResData: [];
-  
-  public selectedInstance;
+  public selectedS3;
 
   constructor(private stateService: StateService,
               private inventory: InventoryService) { }
@@ -29,17 +28,17 @@ export class Ec2SearchResultsComponent implements OnInit {
       attribVal.push({ key: a, val: attributes[a] });
     }
 
-    this.selectedInstance = {
+    this.selectedS3 = {
       priceDimensions:  ins.priceDimensions,
       attributes: attribVal
     }
 
     // console.log(this.selectedInstance);
-    $('#instanceDetails').modal()
+    $('#moreDetails').modal()
   }
 
-  addToInventory(ins) {
-    this.inventory.addEC2Item(ins);
+  addToInventory(item) {
+    this.inventory.addS3Item(item);
   }
 
 }
