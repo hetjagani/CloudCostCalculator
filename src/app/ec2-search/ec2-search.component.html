@@ -1,24 +1,7 @@
 <div *ngIf="loading;then loadBlock; else formBlock"></div>
 <ng-template #formBlock>
   <h3>Select Service Parameters to search instances </h3>
-  <!-- gpuMemory
-  processorFeatures -->
 
-  <!-- 
-    Selected Parameters to search for EC2 instances
-    instanceFamily
-    operatingSystem
-    clockSpeed
-    physicalProcessor
-    memory
-    vcpu
-    storage
-    instanceType
-    
-    networkPerformance
-    ebsOptimized
-    volumeType
-    location (already chosen the availability zone) -->
   <form #searchForm="ngForm" (submit)="searchInstances()">
     <div class="form-group row">
       <label for="instanceFamily" class="col-sm-2 col-form-label">Instance Family</label>
@@ -26,13 +9,6 @@
         <option *ngFor="let val of searchParamAttributes.instanceFamily" name="instanceFamily"> {{val}} </option>
       </select>
     </div>
-
-    <!-- <div class="form-group row">
-      <label for="instanceType" class="col-sm-2 col-form-label">Instance Type</label>
-      <select class="form-control col-sm-10" id="instanceType" name="instanceType" [(ngModel)]="searchParams.instanceType">
-        <option *ngFor="let val of searchParamAttributes.instanceType" name="instanceType"> {{val}} </option>
-      </select>
-    </div> -->
 
     <div class="form-group row">
       <label for="operatingSystem" class="col-sm-2 col-form-label">Operating System</label>
@@ -83,7 +59,7 @@
       </select>
     </div>
 
-    <button type="submit" class="btn btn-primary mb-2">Search Instances</button>
+    <button type="submit" class="btn btn-primary btn-lg btn-block">Search</button>
   </form>
 </ng-template>
 
