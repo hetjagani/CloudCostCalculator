@@ -1,34 +1,13 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" routerLink="/home">CCC</a>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="computeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Compute
-        </a>
-        <div class="dropdown-menu" aria-labelledby="computeDropdown">
-          <a class="dropdown-item" routerLink="ec2">EC2</a>
-          <!-- <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a> -->
-        </div>
-      </li>
-
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="storageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Storage
-        </a>
-        <div class="dropdown-menu" aria-labelledby="storageDropdown">
-          <a class="dropdown-item" routerLink="s3">S3</a>
-          <a class="dropdown-item" href="#">EFS</a>
-          <a class="dropdown-item" href="#">FSx</a>
-          <a class="dropdown-item" href="#">S3 Glacier</a>
-          <a class="dropdown-item" href="#">AWS Backup</a>
-        </div>
-      </li>
-    </ul>
-
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#" routerLink="home">CCC</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" routerLink="ec2" routerLinkActive="active" href="#">EC2</a>
+      <a class="nav-item nav-link" routerLink="s3" routerLinkActive="active" href="#">S3</a>
+      <a class="nav-item nav-link" routerLink="rds" routerLinkActive="active" href="#">RDS</a>
+    </div>
   </div>
-
 </nav>

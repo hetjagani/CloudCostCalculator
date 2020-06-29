@@ -1,0 +1,61 @@
+<div *ngIf="loading;then loadBlock; else formBlock"></div>
+<ng-template #formBlock>
+  <h3>Select Service Parameters to search instances </h3>
+
+  <form #searchForm="ngForm" (submit)="searchRDSInstances()">
+    <div class="form-group row">
+      <label for="location" class="col-sm-2 col-form-label">Location</label>
+      <select class="form-control col-sm-10" id="location" name="location" [(ngModel)]="searchParams.location">
+        <option *ngFor="let val of searchParamAttributes.location" name="location"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="instanceType" class="col-sm-2 col-form-label">Instance Type</label>
+      <select class="form-control col-sm-10" id="instanceType" name="instanceType" [(ngModel)]="searchParams.instanceType">
+        <option *ngFor="let val of searchParamAttributes.instanceType" name="instanceType"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="databaseEngine" class="col-sm-2 col-form-label">Database Engine</label>
+      <select class="form-control col-sm-10" id="databaseEngine" name="databaseEngine" [(ngModel)]="searchParams.databaseEngine">
+        <option *ngFor="let val of searchParamAttributes.databaseEngine" name="databaseEngine"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="deploymentOption" class="col-sm-2 col-form-label">Deployment Option</label>
+      <select class="form-control col-sm-10" id="deploymentOption" name="deploymentOption" [(ngModel)]="searchParams.deploymentOption">
+        <option *ngFor="let val of searchParamAttributes.deploymentOption" name="deploymentOption"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="memory" class="col-sm-2 col-form-label">Memory</label>
+      <select class="form-control col-sm-10" id="memory" name="memory" [(ngModel)]="searchParams.memory">
+        <option *ngFor="let val of searchParamAttributes.memory" name="memory"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="vcpu" class="col-sm-2 col-form-label">VCPU</label>
+      <select class="form-control col-sm-10" id="vcpu" name="vcpu" [(ngModel)]="searchParams.vcpu">
+        <option *ngFor="let val of searchParamAttributes.vcpu" name="vcpu"> {{val}} </option>
+      </select>
+    </div>
+
+    <div class="form-group row">
+      <label for="licenseModel" class="col-sm-2 col-form-label">License Model</label>
+      <select class="form-control col-sm-10" id="licenseModel" name="licenseModel" [(ngModel)]="searchParams.licenseModel">
+        <option *ngFor="let val of searchParamAttributes.licenseModel" name="licenseModel"> {{val}} </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mb-2">Search Instances</button>
+  </form>
+</ng-template>
+
+<ng-template #loadBlock>
+  <app-loader></app-loader>
+</ng-template>

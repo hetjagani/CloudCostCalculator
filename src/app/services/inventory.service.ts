@@ -8,10 +8,12 @@ export class InventoryService {
 
   public inventory: {
     ec2: any[],
-    s3: any[]
+    s3: any[],
+    rds: any[]
   } = { 
     ec2: [],
-    s3: []
+    s3: [],
+    rds: []
   }
 
   constructor() { }
@@ -23,6 +25,11 @@ export class InventoryService {
 
   addS3Item(item) {
     this.inventory.s3.push(item);
+    console.log(this.inventory);
+  }
+
+  addRDSItem(item) {
+    this.inventory.rds.push(item);
     console.log(this.inventory);
   }
 
