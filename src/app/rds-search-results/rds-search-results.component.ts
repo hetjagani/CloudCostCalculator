@@ -11,8 +11,9 @@ declare var $: any;
 export class RdsSearchResultsComponent implements OnInit {
 
   public searchResData: [];
-  
-  public selectedInstance;
+  public selectedInstance: any;
+  public errText: string;
+  public units: string;
 
   constructor(private stateService: StateService,
               private inventory: InventoryService) { }
@@ -38,7 +39,21 @@ export class RdsSearchResultsComponent implements OnInit {
     $('#instanceDetails').modal()
   }
 
-  addToInventory(ins) {
-    this.inventory.addRDSItem(ins);
+  selectItemForInventory(item) {
+    this.selectedInstance = item;
+    this.errText = '';
+  }
+
+  addToInventory() {
+    if(this.units !== '' && this.units) {
+      let toAdd = this.selectedInstance;
+      toAdd.units = parseInt(this.units, 10);
+      this.inventory.addRDSItem(toAdd);
+      this.units = ''
+
+      $('#addToInventoryModal').modal('hide');
+    }else{
+      this.errText = "Please enter valid number of hours...";
+    }
   }
 }

@@ -11,7 +11,7 @@
         <th scope="col">Instance Type</th>
         <th scope="col">Description</th>
         <th scope="col">Hrs/Day</th>
-        <th scope="col">More Details</th>
+        <th scope="col" class="extraDetails">More Details</th>
       </tr>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
         <td>{{ item.product.attributes.instanceType }}</td>
         <td>{{ item.priceDimensions.description }}</td>
         <td>{{ item.unitsperday }}</td>
-        <td>
+        <td class="extraDetails">
           <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
         </td>
       </tr>
@@ -38,7 +38,7 @@
         <th scope="col">Usage Type</th>
         <th scope="col">Description</th>
         <th scope="col">Usage Units</th>
-        <th scope="col">More Details</th>
+        <th scope="col" class="extraDetails">More Details</th>
       </tr>
     </thead>
     <tbody>
@@ -48,7 +48,7 @@
         <td>{{ item.product.attributes.usagetype }}</td>
         <td>{{ item.priceDimensions.description }}</td>
         <td>{{item.units}} {{ item.priceDimensions.unit }}</td>
-        <td>
+        <td class="extraDetails">
           <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
         </td>
       </tr>
@@ -64,10 +64,9 @@
         <th scope="col">Instance Type</th>
         <th scope="col">Storage</th>
         <th scope="col">Database Engine</th>
-        <th scope="col">Price per unit</th>
-        <th scope="col">Unit</th>
         <th scope="col">Description</th>
-        <th scope="col">More Details</th>
+        <th scope="col">Usage Units</th>
+        <th scope="col" class="extraDetails">More Details</th>
       </tr>
     </thead>
     <tbody>
@@ -75,10 +74,9 @@
         <td>{{ item.product.attributes.instanceType }}</td>
         <td>{{ item.product.attributes.storage }}</td>
         <td>{{ item.product.attributes.databaseEngine }}</td>
-        <td *ngIf="item.priceDimensions.pricePerUnit">{{ item.priceDimensions.pricePerUnit.USD | currency }}</td>
-        <td>{{ item.priceDimensions.unit }}</td>
         <td>{{ item.priceDimensions.description }}</td>
-        <td>
+        <td>{{item.units}} {{ item.priceDimensions.unit }}</td>
+        <td class="extraDetails">
           <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
         </td>
       </tr>

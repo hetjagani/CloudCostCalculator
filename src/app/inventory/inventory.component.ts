@@ -40,8 +40,13 @@ export class InventoryComponent implements OnInit {
   }
 
   saveToPDF() {
+    $('#pdfButton').hide();
+    $('.extraDetails').hide();
     let element = document.getElementsByClassName('container-fluid')[0];
-    html2pdf(element);
+    html2pdf(element).then(res => {
+      $('#pdfButton').show();
+      $('.extraDetails').show();
+    }); 
   }
 
 }
