@@ -86,8 +86,8 @@ export class Ec2SearchComponent implements OnInit {
     this.awsUtil.search(this.searchParams, this.SERVICE).then(data => {
       // console.log(data);
       this.loading = false;
-      this.loadingService.hideLoader();
       this.stateService.setData(data);
+      this.loadingService.hideLoader();
       this.router.navigate(['searchresults'], {relativeTo: this.activeRoute});
     }); 
   }

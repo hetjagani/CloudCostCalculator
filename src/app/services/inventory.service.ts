@@ -33,4 +33,20 @@ export class InventoryService {
     console.log(this.inventory);
   }
 
+  getInventory() {
+    return this.inventory;
+  }
+
+  getEC2Items() {
+    return this.inventory.ec2;
+  }
+
+  getS3Items() {
+    return this.inventory.s3;
+  }
+
+  getRDSItems() {
+    return this.inventory.rds;
+  }
+
 }

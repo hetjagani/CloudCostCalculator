@@ -32,7 +32,9 @@ priceDimensions.description -->
           <button type="button" class="btn btn-info" data-toggle="modal" data-target="#moreDetails" (click)="showDetails(item)">Details</button>
         </td>
         <td>
-          <button type="button" class="btn btn-success" (click)="addToInventory(item)">ADD</button>
+          <button type="button" class="btn btn-primary" data-toggle="modal" (click)="selectItemForInventory(item)" data-target="#addToInventoryModal">
+            ADD
+          </button>
         </td>
       </tr>
     </tbody>
@@ -54,6 +56,34 @@ priceDimensions.description -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addToInventoryModal" *ngIf="selectedS3" tabindex="-1" role="dialog" aria-labelledby="addToInventoryModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addToInventoryModalTitle">Enter Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="unitsperday" class="col-form-label">Enter no of {{ selectedS3.priceDimensions.unit }}:</label>
+              <input type="text" class="form-control" id="unitsperday" name="unitsperday" [(ngModel)]="units">
+            </div>
+          </form>
+          <div class="alert alert-secondary" *ngIf="errText" role="alert">
+            {{errText}}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" (click)="addToInventory()">Add to inventory</button>
         </div>
       </div>
     </div>

@@ -11,8 +11,9 @@ declare var $: any;
 export class Ec2SearchResultsComponent implements OnInit {
 
   public searchResData: [];
-  
-  public selectedInstance;
+  public selectedInstance: any;
+  public unitsperday: string;
+  public errText: string;
 
   constructor(private stateService: StateService,
               private inventory: InventoryService) { }
@@ -38,8 +39,23 @@ export class Ec2SearchResultsComponent implements OnInit {
     $('#instanceDetails').modal()
   }
 
-  addToInventory(ins) {
-    this.inventory.addEC2Item(ins);
+  selectItemForInventory(item) {
+    this.selectedInstance = item;
+    this.errText = '';
+  }
+
+  addToInventory() {
+    let hours = parseInt(this.unitsperday, 10);
+    if(this.unitsperday !== '' && this.unitsperday && hours > 0 && hours <= 24) {
+      let toAdd = this.selectedInstance;
+      toAdd.unitsperday = hours;
+      this.unitsperday = ''
+      this.inventory.addEC2Item(toAdd);
+
+      $('#addToInventoryModal').modal('hide');
+    }else{
+      this.errText = "Please enter valid number of hours...";
+    }
   }
 
 }
