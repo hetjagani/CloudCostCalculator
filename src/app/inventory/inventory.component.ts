@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../services/inventory.service';
+import * as html2pdf from 'html2pdf.js'
 declare var $: any;
 
 @Component({
@@ -36,6 +37,11 @@ export class InventoryComponent implements OnInit {
 
     // console.log(this.selectedInstance);
     $('#instanceDetails').modal()
+  }
+
+  saveToPDF() {
+    let element = document.getElementsByClassName('container-fluid')[0];
+    html2pdf(element);
   }
 
 }
