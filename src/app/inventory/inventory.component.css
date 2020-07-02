@@ -1,3 +1,9 @@
+#reportButton {
+  float: right;
+  margin: 5px;
+}
+
 #pdfButton {
   float: right;
+  margin: 5px;
 }

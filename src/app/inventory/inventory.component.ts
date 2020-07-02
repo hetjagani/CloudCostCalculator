@@ -41,12 +41,48 @@ export class InventoryComponent implements OnInit {
 
   saveToPDF() {
     $('#pdfButton').hide();
+    $('#reportButton').hide();
     $('.extraDetails').hide();
     let element = document.getElementsByClassName('container-fluid')[0];
     html2pdf(element).then(res => {
+      $('#reportButton').show();
       $('#pdfButton').show();
       $('.extraDetails').show();
     }); 
+  }
+
+  generateReport() {
+    console.log("Generating Report");
+    console.log(this.calculateEC2Cost());
+  }
+
+  calculateEC2Cost() {
+    let retObj: {
+      totalMonthlyCost: number,
+      totalDailyCost: number,
+      costArray: any[]
+    } = {
+      totalMonthlyCost: 0,
+      totalDailyCost: 0,
+      costArray: []
+    };    
+    
+    for(let i=0; i<this.ec2.length; i++) {
+      let ins = this.ec2[i];
+      let cObj: any = {};
+      if(ins.priceDimensions.unit === 'Hrs') {
+        let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
+        cObj.product = ins.product;
+        cObj.dailyCost = ins.unitsperday * ppu;
+        cObj.monthlyCost = ins.unitsperday * ppu * 30;
+        cObj.description = ins.priceDimensions.description;
+      }
+      retObj.costArray.push(cObj);
+      retObj.totalDailyCost += cObj.dailyCost;
+      retObj.totalMonthlyCost += cObj.monthlyCost;
+    }
+
+    return retObj;
   }
 
 }

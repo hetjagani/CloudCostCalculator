@@ -1,87 +1,94 @@
 <div class="container-fluid">
-  <p class="h1">Inventory <span id="pdfButton"><button type="button" class="btn btn-outline-secondary" (click)="saveToPDF()" >Save PDF</button>
-  </span></p>
+  <p class="h1">
+    Inventory 
+    <span id="reportButton"><button type="button" class="btn btn-info" (click)="generateReport()">Generate Report</button></span>
+    <span id="pdfButton"><button type="button" class="btn btn-outline-secondary" (click)="saveToPDF()" >Save PDF</button></span>
+  </p>
 
-  <hr>
-  <p class="h3">EC2</p>
-  <table class="table">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col">Instance Family</th>
-        <th scope="col">Instance Type</th>
-        <th scope="col">Description</th>
-        <th scope="col">Hrs/Day</th>
-        <th scope="col" class="extraDetails">More Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of ec2">
-        <td>{{ item.product.attributes.instanceFamily }}</td>
-        <td>{{ item.product.attributes.instanceType }}</td>
-        <td>{{ item.priceDimensions.description }}</td>
-        <td>{{ item.unitsperday }}</td>
-        <td class="extraDetails">
-          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="ec2.length">
+    <hr>
+    <p class="h3">EC2</p>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Instance Family</th>
+          <th scope="col">Instance Type</th>
+          <th scope="col">Description</th>
+          <th scope="col">Hrs/Day</th>
+          <th scope="col" class="extraDetails">More Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ec2">
+          <td>{{ item.product.attributes.instanceFamily }}</td>
+          <td>{{ item.product.attributes.instanceType }}</td>
+          <td>{{ item.priceDimensions.description }}</td>
+          <td>{{ item.unitsperday }}</td>
+          <td class="extraDetails">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
+  <div *ngIf="s3.length">
+    <hr>
+    <p class="h3">S3</p>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Fee Description</th>
+          <th scope="col">Operation</th>
+          <th scope="col">Usage Type</th>
+          <th scope="col">Description</th>
+          <th scope="col">Usage Units</th>
+          <th scope="col" class="extraDetails">More Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of s3">
+          <td>{{ item.product.attributes.feeDescription }}</td>
+          <td>{{ item.product.attributes.operation }}</td>
+          <td>{{ item.product.attributes.usagetype }}</td>
+          <td>{{ item.priceDimensions.description }}</td>
+          <td>{{item.units}} {{ item.priceDimensions.unit }}</td>
+          <td class="extraDetails">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <hr>
-  <p class="h3">S3</p>
-  <table class="table">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col">Fee Description</th>
-        <th scope="col">Operation</th>
-        <th scope="col">Usage Type</th>
-        <th scope="col">Description</th>
-        <th scope="col">Usage Units</th>
-        <th scope="col" class="extraDetails">More Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of s3">
-        <td>{{ item.product.attributes.feeDescription }}</td>
-        <td>{{ item.product.attributes.operation }}</td>
-        <td>{{ item.product.attributes.usagetype }}</td>
-        <td>{{ item.priceDimensions.description }}</td>
-        <td>{{item.units}} {{ item.priceDimensions.unit }}</td>
-        <td class="extraDetails">
-          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-
-  <hr>
-  <p class="h3">RDS</p>
-  <table class="table">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col">Instance Type</th>
-        <th scope="col">Storage</th>
-        <th scope="col">Database Engine</th>
-        <th scope="col">Description</th>
-        <th scope="col">Usage Units</th>
-        <th scope="col" class="extraDetails">More Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of rds">
-        <td>{{ item.product.attributes.instanceType }}</td>
-        <td>{{ item.product.attributes.storage }}</td>
-        <td>{{ item.product.attributes.databaseEngine }}</td>
-        <td>{{ item.priceDimensions.description }}</td>
-        <td>{{item.units}} {{ item.priceDimensions.unit }}</td>
-        <td class="extraDetails">
-          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="rds.length">
+    <hr>
+    <p class="h3">RDS</p>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Instance Type</th>
+          <th scope="col">Storage</th>
+          <th scope="col">Database Engine</th>
+          <th scope="col">Description</th>
+          <th scope="col">Usage Units</th>
+          <th scope="col" class="extraDetails">More Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of rds">
+          <td>{{ item.product.attributes.instanceType }}</td>
+          <td>{{ item.product.attributes.storage }}</td>
+          <td>{{ item.product.attributes.databaseEngine }}</td>
+          <td>{{ item.priceDimensions.description }}</td>
+          <td>{{item.units}} {{ item.priceDimensions.unit }}</td>
+          <td class="extraDetails">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(item)">Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div class="modal fade" id="instanceDetails" tabindex="-1" role="dialog" aria-labelledby="instanceDetailsTitle" aria-hidden="true" *ngIf="selectedInstance">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
