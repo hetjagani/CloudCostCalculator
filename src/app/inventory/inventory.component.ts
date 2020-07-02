@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../services/inventory.service';
 import * as html2pdf from 'html2pdf.js'
+import { LoaderService } from '../services/loader.service';
 declare var $: any;
 
 @Component({
@@ -54,6 +55,8 @@ export class InventoryComponent implements OnInit {
   generateReport() {
     console.log("Generating Report");
     console.log(this.calculateEC2Cost());
+    console.log(this.calculateS3Cost());
+    console.log(this.calculateRDSCost());
   }
 
   calculateEC2Cost() {
@@ -70,12 +73,12 @@ export class InventoryComponent implements OnInit {
     for(let i=0; i<this.ec2.length; i++) {
       let ins = this.ec2[i];
       let cObj: any = {};
+      cObj.product = ins.product;
+      cObj.description = ins.priceDimensions.description;
       if(ins.priceDimensions.unit === 'Hrs') {
         let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
-        cObj.product = ins.product;
         cObj.dailyCost = ins.unitsperday * ppu;
         cObj.monthlyCost = ins.unitsperday * ppu * 30;
-        cObj.description = ins.priceDimensions.description;
       }
       retObj.costArray.push(cObj);
       retObj.totalDailyCost += cObj.dailyCost;
@@ -85,4 +88,73 @@ export class InventoryComponent implements OnInit {
     return retObj;
   }
 
+  calculateS3Cost() {
+    let retObj: {
+      totalMonthlyCost: number,
+      totalDailyCost?: number,
+      costArray: any[]
+    } = {
+      totalMonthlyCost: 0,
+      costArray: []
+    };    
+    
+    for(let i=0; i<this.s3.length; i++) {
+      let ins = this.s3[i];
+      let cObj: any = {};
+      cObj.product = ins.product;
+      cObj.description = ins.priceDimensions.description;
+      
+      if(ins.priceDimensions.unit === 'GB') {
+        let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
+        cObj.monthlyCost = ins.units * ppu;
+      }else if(ins.priceDimensions.unit === 'GB-Mo') {
+        let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
+        cObj.monthlyCost = ins.units * ppu;
+      }else if(ins.priceDimensions.unit === 'Requests') {
+        let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
+        cObj.monthlyCost = ins.units * ppu;
+      }
+      retObj.costArray.push(cObj);
+      retObj.totalMonthlyCost += cObj.monthlyCost;
+    }
+
+    return retObj;
+  }
+
+  calculateRDSCost() {
+    let retObj: {
+      totalMonthlyCost: number,
+      totalDailyCost?: number,
+      costArray: any[]
+    } = {
+      totalMonthlyCost: 0,
+      costArray: []
+    };    
+    
+    for(let i=0; i<this.rds.length; i++) {
+      let ins = this.rds[i];
+      let cObj: any = {};
+      cObj.product = ins.product;
+      cObj.description = ins.priceDimensions.description;
+      
+      if(ins.priceDimensions.unit === 'Hrs') {
+        let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
+        cObj.dailyCost = ins.units * ppu;
+        cObj.monthlyCost = ins.units * ppu * 30;
+      }else if(ins.priceDimensions.unit === 'GB-Mo') {
+        let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
+        cObj.monthlyCost = ins.units * ppu;
+      }else if(ins.priceDimensions.unit === 'GB') {
+        let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
+        cObj.monthlyCost = ins.units * ppu;
+      }
+      retObj.costArray.push(cObj);
+      retObj.totalMonthlyCost += cObj.monthlyCost;
+      if(cObj.dailyCost) {
+        retObj.totalDailyCost += cObj.dailyCost;
+      }
+    }
+
+    return retObj;
+  }
 }
