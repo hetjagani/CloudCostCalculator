@@ -18,6 +18,7 @@ import { S3SearchResultsComponent } from './s3-search-results/s3-search-results.
 import { RdsSearchComponent } from './rds-search/rds-search.component';
 import { RdsSearchResultsComponent } from './rds-search-results/rds-search-results.component';
 import { InventoryComponent } from './inventory/inventory.component';
+import { ReportComponent } from './report/report.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { InventoryComponent } from './inventory/inventory.component';
     S3SearchResultsComponent,
     RdsSearchComponent,
     RdsSearchResultsComponent,
-    InventoryComponent
+    InventoryComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,

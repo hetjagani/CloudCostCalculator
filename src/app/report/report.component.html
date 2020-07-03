@@ -1,0 +1,142 @@
+<div class="container-fluid">
+
+  <h2>Cloud Inventory Report 
+    <span id='pdfButton'>
+      <button type="button" class="btn btn-outline-secondary btn-sm extraDetails" (click)="saveToPDF()">Save PDF</button>
+    </span>
+  </h2>
+  <hr>
+
+  <div id="ec2_report" class="container report" *ngIf="reportObj.ec2 != undefined">
+    <h4>Elastic Cloud Container (EC2)</h4>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Instance Family</th>
+          <th scope="col">Description</th>
+          <th scope="col">Daily Cost</th>
+          <th scope="col">Monthly Cost (30 days)</th>
+          <th scope="col" class="extraDetails">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ins of reportObj.ec2.costArray; index as i">
+          <th scope="row">{{i + 1}}</th>
+          <td>{{ins.product.attributes.instanceFamily}}</td>
+          <td>{{ins.description}}</td>
+          <td>{{ins.dailyCost}}</td>
+          <td>{{ins.monthlyCost}}</td>
+          <td>
+            <button type="button" class="btn btn-info extraDetails" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(ins)">Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-info" role="alert">
+      <h5 class="alert-heading">Summary</h5>
+      <p *ngIf="reportObj.ec2.totalDailyCost">Your total <b>daily</b> cost for EC2 is <b>{{reportObj.ec2.totalDailyCost}}</b></p>
+      <hr>
+      <p>Your total <b>monthly</b> cost for EC2 is <b>{{reportObj.ec2.totalMonthlyCost}}</b></p>
+    </div>
+
+    <hr>
+  </div>
+  <div id="s3_report" class="container report" *ngIf="reportObj.s3 != undefined">
+    <h4>Simple Storage Service (S3)</h4>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Description</th>
+          <th scope="col">Monthly Cost (30 days)</th>
+          <th scope="col" class="extraDetails">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ins of reportObj.s3.costArray; index as i">
+          <th scope="row">{{i + 1}}</th>
+          <td>{{ins.description}}</td>
+          <td>{{ins.monthlyCost}}</td>
+          <td>
+            <button type="button" class="btn btn-info extraDetails" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(ins)">Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-info" role="alert">
+      <h5 class="alert-heading">Summary</h5>
+      <p *ngIf="reportObj.s3.totalDailyCost > 0">Your total <b>daily</b> cost for S3 is <b>{{reportObj.s3.totalDailyCost}}</b></p>
+      <hr>
+      <p>Your total <b>monthly</b> cost for S3 is <b>{{reportObj.s3.totalMonthlyCost}}</b></p>
+    </div>
+
+    <hr>
+  </div>
+
+  <div id="rds_report" class="container report" *ngIf="reportObj.rds != undefined">
+    <h4>Relational Database Service (RDS)</h4>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Database Engine</th>
+          <th scope="col">Description</th>
+          <th scope="col">Product Family</th>
+          <th scope="col">Daily Cost</th>
+          <th scope="col">Monthly Cost (30 days)</th>
+          <th scope="col" class="extraDetails">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ins of reportObj.rds.costArray; index as i">
+          <th scope="row">{{i + 1}}</th>
+          <td>{{ins.product.attributes.databaseEngine}}</td>
+          <td>{{ins.description}}</td>
+          <td>{{ins.product.productFamily}}</td>
+          <td>{{ins.dailyCost}}</td>
+          <td>{{ins.monthlyCost}}</td>
+          <td>
+            <button type="button" class="btn btn-info extraDetails" data-toggle="modal" data-target="#instanceDetails" (click)="showDetails(ins)">Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-info" role="alert">
+      <h5 class="alert-heading">Summary</h5>
+      <p *ngIf="reportObj.rds.totalDailyCost > 0">Your total <b>daily</b> cost for RDS is <b>{{reportObj.rds.totalDailyCost}}</b></p>
+      <hr>
+      <p>Your total <b>monthly</b> cost for RDS is <b>{{reportObj.rds.totalMonthlyCost}}</b></p>
+    </div>
+
+    <hr>
+  </div>
+
+  <div class="modal fade" id="instanceDetails" tabindex="-1" role="dialog" aria-labelledby="instanceDetailsTitle" aria-hidden="true" *ngIf="selectedInstance">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="instanceDetailsTitle">{{ selectedInstance.description }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul *ngFor="let attrib of selectedInstance.attributes">
+            <li> <b>{{attrib.key}}</b>: {{attrib.val}}</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

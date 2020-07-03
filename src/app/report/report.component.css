@@ -1,0 +1,8 @@
+h2, h4 {
+  text-align: center;
+  margin: 10px;
+}
+
+#pdfButton {
+  float: right;
+}

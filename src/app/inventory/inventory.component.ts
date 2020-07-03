@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../services/inventory.service';
 import * as html2pdf from 'html2pdf.js'
-import { LoaderService } from '../services/loader.service';
+import { StateService } from '../services/state-service.service';
+import { Router, ActivatedRoute } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -16,7 +17,10 @@ export class InventoryComponent implements OnInit {
   public rds: any[];
   public selectedInstance;
 
-  constructor(private inventoryService: InventoryService) { }
+  constructor(private inventoryService: InventoryService,
+              private stateService: StateService,
+              private router: Router,
+              private activeRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.ec2 = this.inventoryService.inventory.ec2;
@@ -45,7 +49,15 @@ export class InventoryComponent implements OnInit {
     $('#reportButton').hide();
     $('.extraDetails').hide();
     let element = document.getElementsByClassName('container-fluid')[0];
-    html2pdf(element).then(res => {
+    let opt = {
+      margin: [4, 2],
+      jsPDF: {
+        orientation: 'p',
+        unit: 'mm',
+        format: 'a4',
+      }
+    }
+    html2pdf(element, opt).then(res => {
       $('#reportButton').show();
       $('#pdfButton').show();
       $('.extraDetails').show();
@@ -53,10 +65,13 @@ export class InventoryComponent implements OnInit {
   }
 
   generateReport() {
-    console.log("Generating Report");
-    console.log(this.calculateEC2Cost());
-    console.log(this.calculateS3Cost());
-    console.log(this.calculateRDSCost());
+    let costObj = {
+      ec2: this.calculateEC2Cost(),
+      s3: this.calculateS3Cost(),
+      rds: this.calculateRDSCost()
+    }
+    this.stateService.setData(costObj);
+    this.router.navigate(['report'], { relativeTo: this.activeRoute });
   }
 
   calculateEC2Cost() {
@@ -64,11 +79,15 @@ export class InventoryComponent implements OnInit {
       totalMonthlyCost: number,
       totalDailyCost: number,
       costArray: any[]
-    } = {
-      totalMonthlyCost: 0,
-      totalDailyCost: 0,
-      costArray: []
-    };    
+    };
+    
+    if(this.ec2.length > 0) {
+      retObj = {
+        totalMonthlyCost: 0,
+        totalDailyCost: 0,
+        costArray: []
+      }
+    }
     
     for(let i=0; i<this.ec2.length; i++) {
       let ins = this.ec2[i];
@@ -93,11 +112,16 @@ export class InventoryComponent implements OnInit {
       totalMonthlyCost: number,
       totalDailyCost?: number,
       costArray: any[]
-    } = {
-      totalMonthlyCost: 0,
-      costArray: []
-    };    
-    
+    }; 
+
+    if(this.s3.length > 0) {
+      retObj = {
+        totalMonthlyCost: 0,
+        costArray: [],
+        totalDailyCost: 0
+      };    
+    }
+
     for(let i=0; i<this.s3.length; i++) {
       let ins = this.s3[i];
       let cObj: any = {};
@@ -126,10 +150,15 @@ export class InventoryComponent implements OnInit {
       totalMonthlyCost: number,
       totalDailyCost?: number,
       costArray: any[]
-    } = {
-      totalMonthlyCost: 0,
-      costArray: []
-    };    
+    };
+    
+    if(this.rds.length > 0) {
+      retObj = {
+        totalMonthlyCost: 0,
+        costArray: [],
+        totalDailyCost: 0
+      };    
+    }
     
     for(let i=0; i<this.rds.length; i++) {
       let ins = this.rds[i];
@@ -137,17 +166,16 @@ export class InventoryComponent implements OnInit {
       cObj.product = ins.product;
       cObj.description = ins.priceDimensions.description;
       
-      if(ins.priceDimensions.unit === 'Hrs') {
+      if(ins.priceDimensions.unit === 'Hrs' || ins.priceDimensions.unit ===  'vCPU-Hours' 
+          || ins.priceDimensions.unit ===  'ACU-Hr' || ins.priceDimensions.unit === 'CR-Hr') {
         let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
         cObj.dailyCost = ins.units * ppu;
         cObj.monthlyCost = ins.units * ppu * 30;
-      }else if(ins.priceDimensions.unit === 'GB-Mo') {
-        let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
-        cObj.monthlyCost = ins.units * ppu;
-      }else if(ins.priceDimensions.unit === 'GB') {
+      }else {
         let ppu = parseFloat(ins.priceDimensions.pricePerUnit.USD);
         cObj.monthlyCost = ins.units * ppu;
       }
+
       retObj.costArray.push(cObj);
       retObj.totalMonthlyCost += cObj.monthlyCost;
       if(cObj.dailyCost) {
