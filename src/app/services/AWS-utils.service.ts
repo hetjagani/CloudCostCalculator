@@ -9,8 +9,8 @@ export class AWSUtilsService {
   private creds;
   public pricing;
   
-  constructor() { 
-    this.creds = new AWS.Credentials("AKIA5OTORPR7LQ3DVENO", "LhWfTuFuZan9x+V0SlCgsInHZzpwvJp2mWH8i/aS");
+  constructor() {
+    this.creds = new AWS.Credentials("access", "secret");
     this.pricing = new AWS.Pricing({
       region: 'ap-south-1',
       credentials: this.creds
