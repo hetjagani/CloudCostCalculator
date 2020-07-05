@@ -6,7 +6,7 @@ More importantly this project can be used as learning material if anyone wants t
 
 ## Demo
 
-[![DEMO](Demo.mp4)](Demo.mp4)
+![DEMO](demo.gif)
 
 ## Development server
 
