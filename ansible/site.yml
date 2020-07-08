@@ -1,0 +1,15 @@
+---
+- hosts: webserver
+  become: true
+  gather_facts: false
+  remote_user: ubuntu
+
+  tasks:
+    - name: Updating apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 86400
+
+- include: network.yml
+- include: cloud_res.yml
+- include: server.yml

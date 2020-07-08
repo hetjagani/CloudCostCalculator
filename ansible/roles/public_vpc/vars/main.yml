@@ -1,0 +1,15 @@
+---
+vpc_name: ccc_vpc
+vpc_cidr: 10.20.0.0/16
+vpc_region: us-east-1
+subnet_cidr: 10.20.1.0/24
+subnet_name: ccc_subnet
+route_table:
+  subnets:
+    - '{{subnet_cidr}}'
+  routes:
+    - dest: 0.0.0.0/0
+      gw: igw
+  resource_tags:
+    Name: 'Public'
+    project: '{{project_name}}' 

@@ -1,0 +1,7 @@
+---
+- name: Setup ec2 instance server
+  hosts: local
+  gather_facts: false
+
+  roles:
+    - ec2

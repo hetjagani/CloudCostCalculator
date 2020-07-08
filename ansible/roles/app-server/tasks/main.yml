@@ -1,0 +1,40 @@
+---
+- name: Installing packages
+  apt:
+    name: "{{item}}" # Loops over items specified
+    state: present
+  with_items:
+    - nginx
+
+- name: Deactivate default site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Restart nginx
+
+- name: Ensure nginx is running
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Copy application source
+  copy:
+    src: CloudCostCalculator/
+    dest: /var/www/ccc
+    mode: 0755
+  notify: Restart nginx
+
+- name: Copy application nginx config
+  copy:
+    src: ccc_config
+    dest: /etc/nginx/sites-available
+    mode: 0755
+  notify: Restart nginx
+
+- name: Activate our site
+  file:
+    src: /etc/nginx/sites-available/ccc_config
+    dest: /etc/nginx/sites-enabled/ccc_config
+    state: link
+  notify: Restart nginx

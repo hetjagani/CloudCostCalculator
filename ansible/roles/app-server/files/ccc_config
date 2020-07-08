@@ -1,0 +1,10 @@
+server {
+  
+  listen 0.0.0.0:80;
+  root /var/www/ccc;
+  index index.html;
+
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+}

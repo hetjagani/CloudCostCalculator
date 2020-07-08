@@ -1,0 +1,9 @@
+---
+- name: Setup our application on created server
+  hosts: webserver
+  remote_user: ubuntu
+  become: true
+
+  roles:
+    - app-server  
+

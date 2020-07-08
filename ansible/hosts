@@ -1,0 +1,6 @@
+[local]
+localhost ansible_connection=local
+
+[webserver]
+54.80.111.119 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=aws-private.pem
+

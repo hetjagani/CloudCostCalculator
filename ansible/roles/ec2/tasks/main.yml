@@ -1,0 +1,118 @@
+---
+- name: Gather info for our project subnet
+  ec2_vpc_subnet_info:
+    region: '{{ins_region}}'
+    filters:
+      "tag:project": '{{project_name}}'
+  register: proj_subnet
+
+- name: Create security group
+  ec2_group:
+    aws_access_key: '{{aws_access_key}}'
+    aws_secret_key: '{{aws_secret_key}}'
+    name: "{{ ins_sec_group }}"
+    vpc_id: '{{proj_subnet.subnets[0].vpc_id}}'
+    description: "{{ project_name }} security group"
+    region: "{{ ins_region }}"
+    rules:
+      - proto: tcp  # ssh
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp  # http
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp  # https
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+  register: test_firewall
+
+- name: Create an EC2 key
+  ec2_key:
+    aws_access_key: '{{aws_access_key}}'
+    aws_secret_key: '{{aws_secret_key}}'
+    name: "{{ ins_key_pair }}"
+    region: "{{ ins_region }}"
+  register: ec2_key
+
+- name: Save private key
+  copy: content="{{ ec2_key.key.private_key }}" dest="aws-private.pem" mode=0600
+  when: ec2_key.changed
+
+- name: Create an ec2 instance
+  ec2:
+    aws_access_key: '{{aws_access_key}}'
+    aws_secret_key: '{{aws_secret_key}}'
+    key_name: '{{ ins_key_pair }}'
+    group_id: "{{ test_firewall.group_id }}"
+    assign_public_ip: yes
+    image: '{{ami_id}}'
+    exact_count: '{{count}}'
+    instance_tags:
+      project: '{{project_name}}'
+      Name: '{{ins_name}}'
+    count_tag:
+      project: '{{project_name}}'
+    instance_type: '{{ins_type}}'
+    region: '{{ins_region}}'
+    vpc_subnet_id: '{{proj_subnet.subnets[0].id}}'
+    wait: yes
+  register: new_ins
+
+- name: Clear old ips of EC2 instance(s) from host group
+  lineinfile: 
+    path: '{{ hostpath }}'
+    regexp: "{{hoststring}}$"
+    state: absent
+    
+- name: Add the newly created EC2 instance(s) to host group
+  lineinfile: 
+    dest: '{{ hostpath }}'
+    regexp: '{{ item.public_ip }}' 
+    insertafter: "[webserver]" 
+    line: "{{ item.public_ip }} {{hoststring}}"
+    state: present
+  with_items: '{{new_ins.tagged_instances}}'
+
+- wait_for: path={{ hostpath }} search_regex={{hoststring}}
+
+
+- name: Wait for SSH to come up
+  local_action: wait_for 
+                host={{ item.public_ip }} 
+                port=22 
+                state=started
+                timeout=15
+  with_items: '{{new_ins.tagged_instances}}'
+
+# - name: Check if public key file exists for ssh login
+#   stat:
+#     path: ~/.ssh/id_rsa.pub
+#   register: pub_key_file
+
+# - fail:
+#     msg: |
+#       Generate you public key pair with following command and then try again
+#       $ ssh-keygen -t rsa
+#   when: not pub_key_file.stat.exists
+
+# - name: Add our public key to the authorized_keys of instance
+#   authorized_key:
+#     user: ubuntu
+#     state: present
+#     key: "{{ lookup('file', '/home/ubuntu/.ssh/id_rsa.pub') }}"
+
+# - name: Configure sshd_config to allow PubKeyAuth
+#   lineinfile:
+#     path: /etc/ssh/sshd_config
+#     regexp: '^#PubkeyAuthentication'
+#     line: PubkeyAuthentication yes
+#     state: present
+#   notify: Restart SSH
+
+

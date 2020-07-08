@@ -1,0 +1,57 @@
+---
+- name: Create a VPC
+  ec2_vpc_net:
+    aws_access_key: '{{aws_access_key}}'
+    aws_secret_key: '{{aws_secret_key}}'
+    name: '{{vpc_name}}'
+    cidr_block: '{{vpc_cidr}}'
+    region: '{{vpc_region}}'
+    tags:
+      project: '{{project_name}}'
+  register: new_vpc
+
+- name: Create Subnet for VPC
+  ec2_vpc_subnet:
+    aws_access_key: '{{aws_access_key}}'
+    aws_secret_key: '{{aws_secret_key}}'
+    state: present
+    region: '{{vpc_region}}'
+    cidr: '{{subnet_cidr}}'
+    vpc_id: '{{new_vpc.vpc.id}}'
+    tags:
+      project: '{{project_name}}'
+      Name: '{{subnet_name}}'
+  register: new_subnet
+
+- name: Create Internet Gateway
+  ec2_vpc_igw:
+    aws_access_key: '{{aws_access_key}}'
+    aws_secret_key: '{{aws_secret_key}}'
+    state: present
+    region: '{{vpc_region}}'
+    vpc_id: '{{new_vpc.vpc.id}}'
+  register: new_igw
+
+- name: Gather facts on main route table of VPC
+  ec2_vpc_route_table_info:
+    aws_access_key: '{{aws_access_key}}'
+    aws_secret_key: '{{aws_secret_key}}'
+    region: '{{vpc_region}}'
+    filters:
+      vpc-id: '{{new_vpc.vpc.id}}'
+  register: vpc_rt
+
+- name: Add routes to igw of VPC
+  ec2_vpc_route_table:
+    vpc_id: '{{new_vpc.vpc.id}}'
+    region: '{{vpc_region}}'
+    lookup: id
+    route_table_id: '{{vpc_rt.route_tables[0].id}}'
+    tags:
+      Name: public
+    subnets:
+      - '{{new_subnet.subnet.id}}'
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: '{{new_igw.gateway_id}}'
+  register: public_routing_table

@@ -1,0 +1,7 @@
+---
+- name: Setup AWS Network
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+    - public_vpc

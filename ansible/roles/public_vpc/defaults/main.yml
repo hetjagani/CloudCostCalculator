@@ -1,0 +1,6 @@
+---
+vpc_name: gen_vpc
+vpc_cidr: 10.20.0.0/16
+vpc_region: us-east-1
+subnet_cidr: 10.20.1.0/24
+subnet_name: gen_subnet
